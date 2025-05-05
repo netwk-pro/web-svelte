@@ -1,0 +1,64 @@
+{
+  "notebook.defaultFormatter": "esbenp.prettier-vscode",
+  // Editor settings
+  "editor.defaultFoldingRangeProvider": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[markdown]": {
+    "editor.defaultFoldingRangeProvider": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // ESLint configuration
+  "eslint.validate": [
+    "svelte",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.lintTask.enable": true,
+  "eslint.useESLintClass": true,
+  "eslint.useFlatConfig": true,
+  // Stylelint configuration
+  "stylelint.configBasedir": "D:\\Netwk-Pro\\git\\netwk-pro-svelte-template",
+  "stylelint.configFile": "stylelint.config.js",
+  "stylelint.customSyntax": "postcss-html",
+  "stylelint.ignoreDisables": false,
+  "stylelint.reportDescriptionlessDisables": true,
+  "stylelint.reportInvalidScopeDisables": true,
+  "stylelint.reportNeedlessDisables": true,
+  "stylelint.validate": ["css", "scss", "less", "svelte"],
+  // Custom CSS data for FontAwesome classes
+  "css.customData": [
+    ".vscode/customData.json" // Path to your custom data file
+  ],
+  // Material for MkDocs schema
+  "yaml.schemas": {
+    "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
+  },
+  "yaml.customTags": [
+    "!ENV scalar",
+    "!ENV sequence",
+    "!relative scalar",
+    "tag:yaml.org,2002:python/name:material.extensions.emoji.to_svg",
+    "tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji",
+    "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format",
+    "tag:yaml.org,2002:python/object/apply:pymdownx.slugs.slugify mapping"
+  ],
+  "markdown.validate.ignoredLinks": [
+    "#pledge",
+    "#standards",
+    "#response",
+    "#enforce",
+    "#attribute",
+    "#top"
+  ]
+}

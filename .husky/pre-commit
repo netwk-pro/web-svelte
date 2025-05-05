@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+# .husky/pre-commit
+#
+# SPDX-License-Identifier: CC-BY-4.0 OR GPL-3.0-or-later
+# This file is part of Network Pro.
+. "$(dirname "$0")/_/husky.sh"
+
+# Exit immediately if any command fails
+set -e
+
+# Function to handle script failures
+on_error() {
+  echo "Error: The pre-commit hook failed. Please resolve the issues and try committing again." >&2
+}
+trap 'on_error' ERR
+
+# Run tests with Vitest
+if [ -d "tests" ]; then
+  echo "Running tests with Vitest..."
+  npx vitest --config vitest.config.mjs --passWithNoTests
+fi
+
+# Lint staged JavaScript files with ESLint
+STAGED_JS_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(mjs|js|cjs|svelte)$' || true)
+if [ -n "$STAGED_JS_FILES" ]; then
+  echo "Linting JavaScript files with ESLint..."
+  echo "$STAGED_JS_FILES" | xargs -r npx eslint --config eslint.config.mjs
+fi
+
+# Lint staged CSS and Svelte files with Stylelint
+STAGED_STYLE_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(css|svelte)$' || true)
+if [ -n "$STAGED_STYLE_FILES" ]; then
+  echo "Linting styles with Stylelint..."
+  echo "$STAGED_STYLE_FILES" | xargs -r npx stylelint --ignore-path .stylelintignore
+fi
+
+# Lint Markdown files with markdownlint-cli2
+STAGED_MD_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(md|markdown)$' || true)
+if [ -n "$STAGED_MD_FILES" ]; then
+  echo "Linting Markdown files with markdownlint-cli2..."
+  echo "$STAGED_MD_FILES" | xargs -r npx markdownlint-cli2 "**/*.{md,markdown}" "#node_modules/**"
+fi
+
+# Format staged files with Prettier
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR || true)
+if [ -n "$STAGED_FILES" ]; then
+  echo "Formatting files with Prettier..."
+  echo "$STAGED_FILES" | xargs -r npx prettier --ignore-unknown --write
+  echo "$STAGED_FILES" | xargs -r git add
+fi
+
+# Recheck the index to ensure no changes are missed
+git update-index --again
+
+exit 0
