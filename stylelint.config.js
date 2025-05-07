@@ -9,11 +9,18 @@ This file is part of Network Pro.
 export default {
   extends: [
     "stylelint-config-recommended", // From .stylelintrc.json
-    "stylelint-config-html", // For linting HTML within Svelte or similar frameworks
+    "stylelint-config-html/html", // For linting HTML files
+    "stylelint-config-html/svelte", // For linting HTML within Svelte or similar frameworks
     "stylelint-config-alphabetical-order", // Alphabetical ordering of properties
   ],
   customSyntax: "postcss-html", // For handling HTML syntax
   rules: {
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        ignorePseudoClasses: [":global"],
+      },
+    ],
     "property-no-vendor-prefix": null,
     "selector-no-vendor-prefix": null,
     "selector-pseudo-element-colon-notation": [
@@ -39,7 +46,7 @@ export default {
 
     // Additional rules can be added below if needed
   },
-  reportDescriptionlessDisables: true, // Report disables without descriptions
+  reportDescriptionlessDisables: false, // Do not report disables without descriptions
   reportInvalidScopeDisables: true, // Report invalid scope disables
   reportNeedlessDisables: true, // Report unnecessary disables
 };

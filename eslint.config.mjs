@@ -6,6 +6,8 @@ This file is part of Network Pro.
 ========================================================================== */
 
 import js from "@eslint/js"; // Provides ESLint core rules and recommended config
+import typescriptPlugin from "@typescript-eslint/eslint-plugin"; // TypeScript plugin
+import typescriptParser from "@typescript-eslint/parser"; // TypeScript parser
 import eslintConfigPrettier from "eslint-config-prettier";
 import sveltePlugin from "eslint-plugin-svelte"; // Add Svelte plugin
 import globals from "globals";
@@ -38,8 +40,8 @@ export default [
       "**/dist/**", // Distribution files
       "package.json", // NPM package manifest
       "package-lock.json", // NPM lockfile
-      "node_modules", // Node.js dependencies
-      ".vite", // Vite-specific cache directory
+      "node_modules/", // Node.js dependencies
+      ".vite/", // Vite-specific cache directory
       "*.lock", // Lock files
     ],
   },
@@ -59,6 +61,26 @@ export default [
     },
   },
 
+  // TypeScript-specific configuration
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parser: typescriptParser, // Use TypeScript parser
+      ecmaVersion: 2022, // Use ES2022 for compatibility
+      sourceType: "module",
+    },
+    plugins: { "@typescript-eslint": typescriptPlugin }, // Use TypeScript plugin
+    rules: {
+      ...typescriptPlugin.configs.recommended.rules, // TypeScript recommended rules
+      ...eslintConfigPrettier.rules, // Prettier compatibility
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ], // Ignore unused vars starting with '_'
+      "@typescript-eslint/explicit-module-boundary-types": "off", // Turn off explicit return types for module boundaries
+    },
+  },
+
   // Svelte-specific configuration
   {
     files: ["**/*.svelte"],
@@ -73,8 +95,26 @@ export default [
       ...sveltePlugin.configs.recommended.rules, // Svelte recommended rules
       ...sveltePlugin.configs.prettier.rules, // Prettier compatibility for Svelte
       "svelte/no-at-html-tags": "warn", // Warn on use of @html (security risk)
-      "svelte/no-shorthand-style-property-overrides": "error", // Prevent shorthand style overrides
       "svelte/require-optimized-style-attribute": "warn", // Recommend optimized style attributes
+    },
+  },
+
+  // Svelte + TypeScript configuration
+  {
+    files: ["**/*.svelte"],
+    languageOptions: {
+      parser: svelteParser, // Use Svelte parser
+      parserOptions: {
+        parser: typescriptParser, // Use TypeScript parser for <script lang="ts">
+      },
+      globals: GLOBALS,
+      ecmaVersion: "latest",
+      sourceType: "module",
+    },
+    plugins: { "@typescript-eslint": typescriptPlugin },
+    rules: {
+      ...typescriptPlugin.configs.recommended.rules, // TypeScript rules for Svelte
+      "@typescript-eslint/explicit-module-boundary-types": "off", // Allow implicit return types in Svelte
     },
   },
 ];

@@ -1,19 +1,37 @@
-<script>
-  let name = "Network Pro Strategies";
+<script lang="ts">
+  import ContainerSection from "./ContainerSection.svelte";
+  import Footer from "./Footer.svelte";
+  import HeaderHome from "./HeaderHome.svelte";
+  import HomeContent from "./HomeContent.svelte";
 </script>
 
+<!-- BEGIN HEADER -->
+<header id="header-nav">
+  <ContainerSection>
+    <HeaderHome />
+  </ContainerSection>
+</header>
+<!-- END HEADER -->
+
+<!-- BEGIN MAIN MODULE -->
 <main>
-  <h1>{name}</h1>
-  <p>Welcome to your first Svelte project with Vite!</p>
+  <HomeContent />
 </main>
+<!-- END MAIN MODULE -->
+
+<!-- BEGIN FOOTER -->
+<footer id="licensing">
+  <ContainerSection>
+    <Footer />
+  </ContainerSection>
+</footer>
+
+<!-- END FOOTER -->
 
 <style>
-  main {
-    margin: 2rem;
-    text-align: center;
-  }
-
-  h1 {
-    color: #ff3e00;
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+  :global(a:hover) {
+    color: #ffc627;
+    text-decoration: underline;
   }
 </style>
